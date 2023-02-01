@@ -31,7 +31,7 @@ public class ActionServlet extends HttpServlet {
 		System.out.println(path);
 		
 		try{
-			Action action = mapper.getAction(path);
+			Action action = mapper.getAction(path); //ac
 			action.setServletContext(getServletContext());
 			
 			String resultPage=action.execute(request, response);

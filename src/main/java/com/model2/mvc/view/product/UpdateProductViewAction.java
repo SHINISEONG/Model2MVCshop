@@ -10,8 +10,6 @@ import com.model2.mvc.service.product.vo.ProductVO;
 
 public class UpdateProductViewAction extends Action {
 
-
-
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
@@ -20,7 +18,7 @@ public class UpdateProductViewAction extends Action {
 		ProductVO productVO = service.getProduct(prodNo);
 
 		request.setAttribute("productVO", productVO);
-		//TODO navigating 방식 및 URI 체크
+		// TODO navigating 방식 및 URI 체크
 		return "forward:/product/updateProduct.jsp";
 	}
 

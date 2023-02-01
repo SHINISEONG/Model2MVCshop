@@ -12,31 +12,28 @@ import com.model2.mvc.service.product.impl.ProductServiceImpl;
 
 public class ListProductAction extends Action {
 
-	public ListProductAction() {
-	}
-
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		SearchVO searchVO=new SearchVO();
-		
-		int page=1;
-		if(request.getParameter("page") != null)
-			page=Integer.parseInt(request.getParameter("page"));
-		
+		SearchVO searchVO = new SearchVO();
+
+		int page = 1;
+		if (request.getParameter("page") != null)
+			page = Integer.parseInt(request.getParameter("page"));
+
 		searchVO.setPage(page);
 		searchVO.setSearchCondition(request.getParameter("searchCondition"));
 		searchVO.setSearchKeyword(request.getParameter("searchKeyword"));
-		
-		String pageUnit=getServletContext().getInitParameter("pageSize");
+
+		String pageUnit = getServletContext().getInitParameter("pageSize");
 		searchVO.setPageUnit(Integer.parseInt(pageUnit));
-		
-		ProductService service=new ProductServiceImpl();
-		HashMap<String,Object> map=service.getProductList(searchVO);
+
+		ProductService service = new ProductServiceImpl();
+		HashMap<String, Object> map = service.getProductList(searchVO);
 
 		request.setAttribute("map", map);
 		request.setAttribute("searchVO", searchVO);
-		
-		//TODO navigating 방식 및 URI 확인
+
+		// TODO navigating 방식 및 URI 확인
 		return "forward:/product/listProduct.jsp";
 	}
 

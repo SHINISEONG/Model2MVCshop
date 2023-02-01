@@ -10,18 +10,15 @@ import com.model2.mvc.service.product.vo.ProductVO;
 
 public class GetProductAction extends Action {
 
-	public GetProductAction() {
-	}
-
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int prodNo=Integer.parseInt(request.getParameter("prodNo"));
-		
-		ProductService service=new ProductServiceImpl();
-		ProductVO vo= service.getProduct(prodNo);
-		
+		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
+
+		ProductService service = new ProductServiceImpl();
+		ProductVO vo = service.getProduct(prodNo);
+
 		request.setAttribute("vo", vo);
-		//TODO navigating 방식 및 URI 체크
+		// TODO navigating 방식 및 URI 체크
 		return "forward:/product/readProduct.jsp";
 	}
 

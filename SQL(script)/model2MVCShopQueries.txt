@@ -1,0 +1,30 @@
+Model2SHOP QUERY
+
+----01. User-------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+----02. Product------------------------------------------------------------------------------------------
+
+01. insertProduct()
+	
+	INSERT INTO product VALUES(seq_product_prod_no.NEXTVAL, '놑투북', '노트북이에용',
+				'20220801', '1000000', 'image.jpg', sysdate);
+
+	INSERT INTO product VALUES(seq_product_prod_no.NEXTVAL, ?, ?,
+				?, ?, ?, sysdate)
+
+02. findProduct()
+	
+	SELECT * FROM product WHERE prod_name = '보르도'  ;
+	SELECT * FROM product WHERE prod_name = ?
+
+	
+	

@@ -30,7 +30,7 @@ public class AddProductAction extends Action {
 		service.addProduct(productVO);
 		
 		//TODO 아래 resultPage navigating 방식과 URI확인 철저히 하기 
-		return "forward:/user/findProduct.jsp";
+		return "forward:/product/findProduct.jsp";
 		// ?쿼리 실행 결과 판단은? <-- 추측 : 널체크를 view페이지에서 js로 하고 상품 조회후 상품 번호로 where조건을 걸어 쿼리를 하므로 무조건 1이 나오기때문에 생략 
 	}// end of AddProduct execute()
 

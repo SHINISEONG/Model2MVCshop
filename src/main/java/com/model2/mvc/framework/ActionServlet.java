@@ -33,7 +33,7 @@ public class ActionServlet extends HttpServlet {
 		try{
 			Action action = mapper.getAction(path); //ac aa
 			action.setServletContext(getServletContext());
-			
+			System.out.println("인입점까진 오니?"+request.getAttribute("menu"));
 			String resultPage=action.execute(request, response);
 			String result=resultPage.substring(resultPage.indexOf(":")+1);
 			

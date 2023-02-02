@@ -37,22 +37,24 @@ public class ProductDAO {
 
 	public ProductVO findProduct(int prodNo) throws Exception {
 		Connection con = DBUtil.getConnection();
-		PreparedStatement stmt = con.prepareStatement("SELECT * FROM product " + "WHERE prod_name = ?");
+		PreparedStatement stmt = con.prepareStatement("SELECT * FROM product WHERE PROD_NO = ?");
 		stmt.setInt(1, prodNo);
 
-		ResultSet rs = stmt.getResultSet();
-
+		ResultSet rs = stmt.executeQuery();	
+		
 		ProductVO productVO = null;
-
+		
 		while (rs.next()) {
 			productVO = new ProductVO();
-			productVO.setProdNo(rs.getInt("PROD_NO"));
+			productVO.setProdNo(prodNo);
+			
 			productVO.setProdName(rs.getString("PROD_NAME"));
 			productVO.setFileName(rs.getString("IMAGE_FILE"));
 			productVO.setProdDetail(rs.getString("PROD_DETAIL"));
 			productVO.setManuDate(rs.getString("MANUFACTURE_DAY"));
 			productVO.setPrice(rs.getInt("PRICE"));
 			productVO.setRegDate(rs.getDate("REG_DATE"));
+			
 		}
 		con.close();
 		return productVO;
@@ -68,8 +70,11 @@ public class ProductDAO {
 				sql += " where PROD_NO='" + searchVO.getSearchKeyword() // searchCon이 0이면 아이디검색
 						+ "'";
 			} else if (searchVO.getSearchCondition().equals("1")) {
-				sql += " where PROD_NAME='" + searchVO.getSearchKeyword() // serchCon이 1이면 이름 검색
-						+ "'";
+				sql += " where PROD_NAME like '%" + searchVO.getSearchKeyword() // serchCon이 1이면 이름 검색
+						+ "%'";
+			} else if (searchVO.getSearchCondition().equals("2")) {
+				sql += " where PRICE='" + searchVO.getSearchKeyword() // serchCon이 2이면 가격 검색
+				+ "'";
 			}
 		}
 		sql += " order by PROD_NO";
@@ -132,6 +137,7 @@ public class ProductDAO {
 		stmt.setString(3, productVO.getManuDate());
 		stmt.setInt(4, productVO.getPrice());
 		stmt.setString(5, productVO.getFileName());
+		stmt.setInt(6, productVO.getProdNo());
 		stmt.executeUpdate();
 
 		con.close();

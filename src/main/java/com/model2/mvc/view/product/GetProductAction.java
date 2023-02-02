@@ -13,13 +13,15 @@ public class GetProductAction extends Action {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
-
+		String menu = request.getParameter("menu");
+		System.out.println(menu);
 		ProductService service = new ProductServiceImpl();
 		ProductVO vo = service.getProduct(prodNo);
 
-		request.setAttribute("vo", vo);
+		request.setAttribute("productVO", vo);
+		request.setAttribute("menu", menu);
 		// TODO navigating 방식 및 URI 체크
-		return "forward:/product/readProduct.jsp";
+		return "forward:/product/getProductView.jsp";
 	}
 
 }

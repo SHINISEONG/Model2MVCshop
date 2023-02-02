@@ -25,6 +25,12 @@
 		if(total%searchVO.getPageUnit() >0)
 			totalPage += 1;
 	}
+	
+	if(searchVO.getSearchCondition()==null){
+		searchVO.setSearchCondition("");
+	}
+	String menu="";
+	menu = request.getParameter("menu");
 %>
 
 
@@ -48,7 +54,7 @@ function fncGetProductList(){
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/listProduct.do?menu=manage" method="post">
+<form name="detailForm" action="/listProduct.do?menu=<%=menu%>" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -59,9 +65,11 @@ function fncGetProductList(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="93%" class="ct_ttl01">
-					
-							상품 관리
-					
+					<%if (menu.equals("manage")) {%>
+						상품 관리
+					<%} else if (menu.equals("search")){%>
+						상품 목록조회
+					<%} %>
 					</td>
 				</tr>
 			</table>
@@ -78,11 +86,12 @@ function fncGetProductList(){
 		
 		<td align="right">
 			<select name="searchCondition" class="ct_input_g" style="width:80px">
-					<option value="0" <%= searchVO.getSearchCondition()==null?"selected":""%>>상품번호</option>
-					<option value="1" <%= searchVO.getSearchCondition()=="1"?"selected":"" %>>상품명</option>
-					<option value="2" <%--=searchVO.getSearchCondition().equals("2")?"selected":"" --%>>상품가격</option>
+					
+					<option value="0" <%= searchVO.getSearchCondition().equals("")||searchVO.getSearchCondition().equals("0")?"selected":"" %>>상품번호</option>
+					<option value="1" <%= searchVO.getSearchCondition().equals("1")?"selected":"" %>>상품명</option>
+					<option value="2" <%= searchVO.getSearchCondition().equals("2")?"selected":"" %>>상품가격</option>
 			</select>
-			<input type="text" name="searchKeyword" value="<%= searchVO.getSearchCondition()== null ? "" : searchVO.getSearchKeyword() %>" class="ct_input_g" style="width:200px; height:19px" />
+			<input type="text" name="searchKeyword" value="<%= searchVO.getSearchCondition()== "" ? "" : searchVO.getSearchKeyword() %>" class="ct_input_g" style="width:200px; height:19px" />
 		</td>
 	
 		
@@ -133,7 +142,7 @@ function fncGetProductList(){
 		<td></td>
 				
 				<td align="left">
-				<a href="/getProduct.do?prodNo=<%=vo.getProdNo()%>menu=manage"><%=vo.getProdName()%></a></td>
+				<a href="/getProduct.do?prodNo=<%=vo.getProdNo()%>&menu=<%=menu%>"><%=vo.getProdName()%></a></td>
 		
 		<td></td>
 		<td align="left"><%=vo.getPrice()%></td>
@@ -160,7 +169,7 @@ function fncGetProductList(){
 		<%
 	  		for(int i=1;i<=totalPage;i++){
 		%>
-			<a href="/listProduct.do?page=<%=i%>&menu=manage"><%=i%></a>
+			<a href="/listProduct.do?page=<%=i%>&menu=<%=menu%>"><%=i%></a>
 		<% } %>
 		
     	</td>

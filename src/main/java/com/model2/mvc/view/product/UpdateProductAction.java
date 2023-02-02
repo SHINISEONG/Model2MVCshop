@@ -13,10 +13,16 @@ public class UpdateProductAction extends Action {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
-
+		
+		HttpSession session = request.getSession(true);
+					
+		int prodNo = Integer.parseInt((String)session.getAttribute("prodNo"));
+		
+		System.out.println("updateAction내부로 prodNo오니?"+prodNo);
+		
 		ProductVO productVO = new ProductVO();
+		
+		productVO.setProdNo(prodNo);
 		productVO.setProdName(request.getParameter("prodName"));
 		productVO.setProdDetail(request.getParameter("prodDetail"));
 		productVO.setManuDate(request.getParameter("manuDate"));
@@ -26,14 +32,8 @@ public class UpdateProductAction extends Action {
 		ProductService service = new ProductServiceImpl();
 		service.updateProduct(productVO);
 
-		HttpSession session = request.getSession();
-		int sessionProdNo = ((ProductVO) session.getAttribute("product")).getProdNo();
-
-		if (sessionProdNo == prodNo) {
-			session.setAttribute("product", productVO);
-		}
 		// TODO navigating 방식 및 URI체크
-		return "redirect:/getProduct.do?prodNo=" + prodNo;
+		return "redirect:/getProduct.do?prodNo=" + prodNo + "&menu=search";
 	}
 
 }

@@ -4,13 +4,13 @@
 <%
 ProductVO productVO = (ProductVO)request.getAttribute("productVO");
 
-System.out.println("다시 확인할때 addPV로 잘 넘어왔니?"+productVO);
+String menu = request.getParameter("menu");
 
 %>
 
 <html>
 <head>
-<title>상품등록</title>
+<title>상품수정</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
@@ -21,7 +21,7 @@ System.out.println("다시 확인할때 addPV로 잘 넘어왔니?"+productVO);
 <!--
 function fncAddProduct(){
 	//Form 유효성 검증
- 	var name = document.detailForm.prodName.value;
+	var name = document.detailForm.prodName.value;
 	var detail = document.detailForm.prodDetail.value;
 	var manuDate = document.detailForm.manuDate.value;
 	var price = document.detailForm.price.value;
@@ -42,8 +42,8 @@ function fncAddProduct(){
 		alert("가격은 반드시 입력하셔야 합니다.");
 		return;
 	}
-
-	document.detailForm.action='/addProduct.do';
+		
+	document.detailForm.action='/updateProduct.do';
 	document.detailForm.submit();
 }
 
@@ -67,7 +67,12 @@ function resetData(){
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="93%" class="ct_ttl01">
-							상품등록
+					<% if(menu.equals("manage")) { %>
+							상품수정
+						<% } else if(menu.equals("search")){ %>
+							상품상세조회
+						<%}%>
+					
 					</td>
 					<td width="20%" align="right">&nbsp;</td>
 				</tr>
@@ -83,22 +88,39 @@ function resetData(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
+	<% if(menu.equals("search")) { %>
 	<tr>
 		<td width="104" class="ct_write">
-			상품명 <imgsrc="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle">
+			상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+		</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td width="105"><%=productVO.getProdNo()%></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<%} %>
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<tr>
+		<td width="104" class="ct_write">
+			상품명 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="105">
-						<%if(productVO == null ){%>
-						<input type="text" name="prodName" class="ct_input_g" 
+						<%if(menu.equals("manage")) { %>
+						<input type="text" name="prodName" value ="<%=productVO.getProdName()%>" class="ct_input_g" 
 									style="width: 100px; height: 19px" maxLength="20">
-						<%} else {%>
-							<%=productVO.getProdName() %>
-						<%} %>
-						
+						<%} else if(menu.equals("search")) {%>
+								<%=productVO.getProdName() %>
+						<%}%>
 					</td>
 				</tr>
 			</table>
@@ -107,16 +129,35 @@ function resetData(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
+	
+	<%if(menu.equals("search")) { %>
 	<tr>
 		<td width="104" class="ct_write">
-			상품상세정보 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+		상품이미지 <img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input type="text" name="prodDetail" class="ct_input_g" 
-						style="width: 100px; height: 19px" maxLength="10" minLength="6"/>
-			<%} else {%>
+						<%=productVO.getFileName()%>
+		</td>
+	</tr>
+	
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<%} %>
+	
+	<tr>
+		<td width="104" class="ct_write">
+			상품상세정보	<img	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			
+			
+		</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">
+			<%if(menu.equals("manage")) { %>
+						<input type="text" name="prodDetail" value ="<%=productVO.getProdDetail()%>" class="ct_input_g" 
+								style="width: 100px; height: 19px" maxLength="20">
+			<%} else if (menu.equals("search")){ %>
 				<%= productVO.getProdDetail() %>
 			<%} %>
 		</td>
@@ -126,17 +167,18 @@ function resetData(){
 	</tr>
 	<tr>
 		<td width="104" class="ct_write">
-			제조일자 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			제조일자 
+			<%if(menu.equals("manage")) { %>			
+			<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			<%} %>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input type="text" name="manuDate" readonly="readonly" class="ct_input_g"  
-						style="width: 100px; height: 19px"	maxLength="10" minLength="6"/>
-				&nbsp;<img src="../images/ct_icon_date.gif" width="15" height="15" 
-										onclick="show_calendar('document.detailForm.manuDate', document.detailForm.manuDate.value)"/>
-			<%} else {%>
-				<%=productVO.getManuDate() %>
+			<%if(menu.equals("manage")) { %>
+						<input type="text" name="manuDate" value ="<%=productVO.getManuDate()%>" class="ct_input_g" 
+								style="width: 100px; height: 19px" maxLength="20">
+			<%} else if (menu.equals("search")){ %>
+				<%= productVO.getManuDate() %>
 			<%} %>
 		</td>
 	</tr>
@@ -145,14 +187,17 @@ function resetData(){
 	</tr>
 	<tr>
 		<td width="104" class="ct_write">
-			가격 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			가격 
+			<%if(menu.equals("manage")) { %>	
+			<img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
+			<%} %>
 		</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input type="text" name="price" 	class="ct_input_g" 
-						style="width: 100px; height: 19px" maxLength="10">&nbsp;원
-			<%} else {%>
+			<%if(menu.equals("manage")) { %>
+						<input type="text" name="price" value ="<%=productVO.getPrice()%>" class="ct_input_g" 
+								style="width: 100px; height: 19px" maxLength="20">
+			<%} else if (menu.equals("search")){ %>
 				<%= productVO.getPrice() %>
 			<%} %>
 		</td>
@@ -160,21 +205,31 @@ function resetData(){
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
+	<%if(menu.equals("manage")) { %>
 	<tr>
 		<td width="104" class="ct_write">상품이미지</td>
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
-			<%if(productVO == null) { %>
-			<input		type="text" name="fileName" class="ct_input_g" 
-							style="width: 200px; height: 19px" maxLength="13"/>
-			<%} else {%>
-				<%=productVO.getFileName() %>
-			<%} %>
+
+						<input type="text" name="fileName" value ="<%=productVO.getFileName()%>" class="ct_input_g" 
+								style="width: 100px; height: 19px" maxLength="20">
 		</td>
+	</tr>
+	
+	<tr>
+		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
+	</tr>
+	<%} %>
+	<%if(menu.equals("search")) { %>
+	<tr>
+		<td width="104" class="ct_write">등록일자</td>
+		<td bgcolor="D6D6D6" width="1"></td>
+		<td class="ct_write01">2012-10-14</td>
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
 	</tr>
+	<%} %>
 </table>
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
@@ -188,10 +243,11 @@ function resetData(){
 				</td>
 				
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-				<%if(productVO == null) { %>
-					<a href="javascript:fncAddProduct();">등록</a>
-				<%} else {%>
-					<a href="/listProduct.do?menu=manage">확인</a>
+				<%if(menu.equals("manage")) { %>
+					<%session.setAttribute("prodNo", request.getParameter("prodNo")); %>
+					<a href="javascript:fncAddProduct();">수정</a>
+				<%} else if(menu.equals("search")) {%>
+					<a href="/addPurchaseView.do?prod_no=<%=productVO.getProdNo()%>">구매</a>
 				<%} %>
 				</td>
 				
@@ -204,11 +260,15 @@ function resetData(){
 				</td>
 				<td background="/images/ct_btnbg02.gif" class="ct_btn01"	 style="padding-top: 3px;">
 				
-				<%if(productVO == null) { %>
-					<a href="javascript:resetData();">취소</a>
-				<%} else {%>
-					<a href="../product/addProductView.jsp;">추가등록</a>
-				<%}%>
+				
+					<a href="javascript:history.go(-1)">
+					<%if(menu.equals("manage")) { %>
+						취소
+					<%} else if(menu.equals("search")) {%>
+						이전
+					<%} %>
+					</a>
+				
 				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>

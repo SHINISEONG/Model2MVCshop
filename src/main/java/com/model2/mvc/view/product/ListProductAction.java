@@ -26,12 +26,13 @@ public class ListProductAction extends Action {
 
 		String pageUnit = getServletContext().getInitParameter("pageSize");
 		searchVO.setPageUnit(Integer.parseInt(pageUnit));
-
+		System.out.println(searchVO);
 		ProductService service = new ProductServiceImpl();
 		HashMap<String, Object> map = service.getProductList(searchVO);
 
 		request.setAttribute("map", map);
 		request.setAttribute("searchVO", searchVO);
+		
 
 		// TODO navigating 방식 및 URI 확인
 		return "forward:/product/listProduct.jsp";

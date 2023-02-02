@@ -26,7 +26,7 @@ public class ListUserAction extends Action {
 		searchVO.setSearchCondition(request.getParameter("searchCondition"));
 		searchVO.setSearchKeyword(request.getParameter("searchKeyword"));
 		
-		String pageUnit=getServletContext().getInitParameter("pageSize");
+		String pageUnit=getServletContext().getInitParameter("pageSize");  //servletcontext를 각 액션에 부여한 이유.
 		searchVO.setPageUnit(Integer.parseInt(pageUnit));
 		
 		UserService service=new UserServiceImpl();

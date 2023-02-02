@@ -16,7 +16,7 @@ public class RequestMapping {
 		map = new HashMap<String, Action>();
 		InputStream in = null;
 		try{
-			in = getClass().getClassLoader().getResourceAsStream(resources);
+			in = getClass().getClassLoader().getResourceAsStream(resources); // 나중에 재분석
 			properties = new Properties();
 			properties.load(in);
 		}catch(Exception ex){

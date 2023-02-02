@@ -22,7 +22,8 @@ public class ProductDAO {
 		Connection con = DBUtil.getConnection();
 
 		String sql = "INSERT INTO product VALUES(seq_product_prod_no.NEXTVAL, ?, ?, ?, ?, ?, sysdate)";
-
+		
+		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setString(1, productVO.getProdName());
 		stmt.setString(2, productVO.getProdDetail());

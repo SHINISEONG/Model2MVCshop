@@ -16,9 +16,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ProductVO addProduct(ProductVO productVO) throws Exception {
+	public void addProduct(ProductVO productVO) throws Exception {
 		productDAO.insertProduct(productVO);
-		return productVO;
+		
 	}
 
 	@Override

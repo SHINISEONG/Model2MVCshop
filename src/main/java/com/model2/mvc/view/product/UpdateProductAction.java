@@ -33,7 +33,7 @@ public class UpdateProductAction extends Action {
 		service.updateProduct(productVO);
 
 		// TODO navigating 방식 및 URI체크
-		return "redirect:/getProduct.do?prodNo=" + prodNo + "&menu=search";
+		return "redirect:/getProduct.do?prodNo=" + prodNo + "&menu=search&updateChecker=true";
 	}
 
 }

@@ -6,6 +6,14 @@ ProductVO productVO = (ProductVO)request.getAttribute("productVO");
 
 String menu = request.getParameter("menu");
 
+Boolean updateChecker=false;
+
+if(request.getParameter("updateChecker") != null) {
+	updateChecker = Boolean.parseBoolean(request.getParameter("updateChecker"));
+}
+
+System.out.println(updateChecker);
+
 %>
 
 <html>
@@ -241,38 +249,44 @@ function resetData(){
 				<td width="17" height="23">
 					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
 				</td>
-				
-				<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
-				<%if(menu.equals("manage")) { %>
-					<%session.setAttribute("prodNo", request.getParameter("prodNo")); %>
-					<a href="javascript:fncAddProduct();">수정</a>
-				<%} else if(menu.equals("search")) {%>
-					<a href="/addPurchaseView.do?prod_no=<%=productVO.getProdNo()%>">구매</a>
-				<%} %>
-				</td>
-				
-				<td width="14" height="23">
-					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
-				</td>
-				<td width="30"></td>
-				<td width="17" height="23">
-					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-				</td>
-				<td background="/images/ct_btnbg02.gif" class="ct_btn01"	 style="padding-top: 3px;">
-				
-				
-					<a href="javascript:history.go(-1)">
+				<%if(!updateChecker) {%>
+					<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
 					<%if(menu.equals("manage")) { %>
-						취소
+						<%session.setAttribute("prodNo", request.getParameter("prodNo")); %>
+						<a href="javascript:fncAddProduct();">수정</a>
 					<%} else if(menu.equals("search")) {%>
-						이전
+						<a href="/addPurchaseView.do?prod_no=<%=productVO.getProdNo()%>">구매</a>
 					<%} %>
-					</a>
+					</td>
+					
+					<td width="14" height="23">
+						<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
+					</td>
+					<td width="30"></td>
+					<td width="17" height="23">
+						<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
+					</td>
+					<td background="/images/ct_btnbg02.gif" class="ct_btn01"	 style="padding-top: 3px;">
+					
+					
+						<a href="javascript:history.go(-1)">
+						<%if(menu.equals("manage")) { %>
+							취소
+						<%} else if(menu.equals("search")) {%>
+							이전
+						<%} %>
+						</a>
+					</td>
+				<%} else {%>
+					<td background="/images/ct_btnbg02.gif" class="ct_btn01"  style="padding-top: 3px;">
+					<a href="/listProduct.do?menu=manage">확인</a>
+					</td>
+				<%} %>
 				
-				</td>
 				<td width="14" height="23">
 					<img src="/images/ct_btnbg03.gif" width="14" height="23"/>
 				</td>
+				
 			</tr>
 		</table>
 		</td>

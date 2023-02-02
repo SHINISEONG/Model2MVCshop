@@ -26,5 +26,9 @@ Model2SHOP QUERY
 	SELECT * FROM product WHERE prod_name = '보르도'  ;
 	SELECT * FROM product WHERE prod_name = ?
 
+03. updateProduct()
+
+	UPDATE product SET prod_name='후히히', prod_detail='디테이루', manufacture_day='20230101', price=100, image_file='img.jpg' WHERE prod_no=10002;
+	UPDATE product SET prod_name=?, prod_detail=?, manufacture_day=?, price=?, image_file=? WHERE prod_no=?
 	
 	

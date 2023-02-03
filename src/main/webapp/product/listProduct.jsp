@@ -3,7 +3,8 @@
 <%@ page import="java.util.*"  %>
 <%@ page import="com.model2.mvc.service.product.vo.*" %>
 <%@ page import="com.model2.mvc.common.*" %>
-
+<%@ page import="com.model2.mvc.service.purchase.impl.*" %>
+<%@ page import="com.model2.mvc.service.purchase.*" %>
 
 
 <%
@@ -31,6 +32,13 @@
 	}
 	String menu="";
 	menu = request.getParameter("menu");
+	
+	PurchaseService purchaseService = new PurchaseServiceImpl();
+	
+	HashMap<String, Object> getSaleMap = new HashMap<String, Object>();
+	
+	
+	ArrayList<Integer> soldOutList = (ArrayList<Integer>)purchaseService.getSaleList(searchVO).get("soldOut");
 %>
 
 
@@ -142,7 +150,11 @@ function fncGetProductList(){
 		<td></td>
 				
 				<td align="left">
+				<%if(!(soldOutList.contains(vo.getProdNo()))) {%>
 				<a href="/getProduct.do?prodNo=<%=vo.getProdNo()%>&menu=<%=menu%>"><%=vo.getProdName()%></a></td>
+				<%} else {%>
+					<%=vo.getProdName()%>
+				<%} %>
 		
 		<td></td>
 		<td align="left"><%=vo.getPrice()%></td>
@@ -150,8 +162,12 @@ function fncGetProductList(){
 		<td align="left"><%=vo.getRegDate()%></td>
 		<td></td>
 		<td align="left">
-		
-			판매중
+			<%if(!(soldOutList.contains(vo.getProdNo()))) {%>
+				 	판매중
+				<%} else {%>
+					재고 없음
+				<%} %>
+			
 		
 		</td>	
 	</tr>
@@ -169,7 +185,7 @@ function fncGetProductList(){
 		<%
 	  		for(int i=1;i<=totalPage;i++){
 		%>
-			<a href="/listProduct.do?page=<%=i%>&menu=<%=menu%>"><%=i%></a>
+			<a href="/listProduct.do?page=<%=i%>&menu=<%=menu%>&searchKeyword=<%=searchVO.getSearchKeyword()%>&searchCondition=<%=searchVO.getSearchCondition()%>"><%=i%></a>
 		<% } %>
 		
     	</td>

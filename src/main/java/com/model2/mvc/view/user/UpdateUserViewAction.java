@@ -21,6 +21,6 @@ public class UpdateUserViewAction extends Action{
 		
 		request.setAttribute("userVO", userVO);
 		
-		return "forward:/user/updateUser.jsp";
+		return "forward:/user/addUserView.jsp";
 	}
 }

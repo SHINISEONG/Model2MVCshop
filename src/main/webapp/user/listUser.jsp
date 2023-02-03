@@ -130,9 +130,11 @@ function fncGetUserList(){
 		<td class="ct_line02"></td>
 		<td class="ct_list_b">¿Ã∏ﬁ¿œ</td>		
 	</tr>
+	
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
+	
 	<% 	
 		int no=list.size();
 		for(int i=0; i<list.size(); i++) {
@@ -162,7 +164,7 @@ function fncGetUserList(){
 		<%
 			for(int i=1;i<=totalPage;i++){
 		%>
-			<a href="/listUser.do?page=<%=i%>"><%=i %></a>
+			<a href="/listUser.do?page=<%=i%>&searchKeyword=<%=searchVO.getSearchKeyword()%>&searchCondition=<%=searchVO.getSearchCondition()%>"><%=i %></a>
 		<%
 			}
 		%>	

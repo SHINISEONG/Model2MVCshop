@@ -32,3 +32,38 @@ Model2SHOP QUERY
 	UPDATE product SET prod_name=?, prod_detail=?, manufacture_day=?, price=?, image_file=? WHERE prod_no=?
 	
 	
+----03. Purchase ------------------------------------------------------------------------------------
+
+01. insertPurchase()
+	
+	INSERT INTO transaction VALUES(seq_transaction_tran_no.NEXTVAL, 10001, 'user01', '1', 
+	'신희성', '01012341234', '갱기도', '조심히오세요', 
+	'cod', sysdate,'2012/12/12');
+
+	INSERT INTO transaction VALUES(seq_transaction_tran_no.NEXTVAL,
+					?, ?, ?, ?, ?, ?, ?, ? , sysdate,?)
+
+02. findPurchase()
+
+	SELECT * FROM transaction WHERE TRAN_NO = ?
+
+03. getPurchaseList()
+	
+	SELECT * FROM transaction WHERE BUYER_ID = ?
+
+04. updatePurchase()
+
+	UPDATE transaction SET payment_option=?, receiver_name=?, receiver_phone=?, dlvy_addr=?, dlvy_request=?, dlvy_date=? WHERE tran_no=?
+
+05. getSaleList()
+
+	SELECT p.prod_no
+	FROM product p, transaction t
+	WHERE p.prod_no = t.prod_no
+
+	SELECT p.prod_no prodNo FROM product p, transaction t WHERE p.prod_no = t.prod_no
+
+
+06. updateTranCode()
+
+	UPDATE transaction SET tran_status_code=? WHERE tran_no=?

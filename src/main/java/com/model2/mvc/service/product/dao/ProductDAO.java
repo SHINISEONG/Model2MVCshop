@@ -9,7 +9,6 @@ import java.util.HashMap;
 import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.vo.ProductVO;
-import com.model2.mvc.service.user.vo.UserVO;
 
 public class ProductDAO {
 	/// field
@@ -66,6 +65,7 @@ public class ProductDAO {
 
 		String sql = "select * from PRODUCT ";
 		if (searchVO.getSearchCondition() != null) {
+				
 			if (searchVO.getSearchCondition().equals("0")) {
 				sql += " where PROD_NO='" + searchVO.getSearchKeyword() // searchCon이 0이면 아이디검색
 						+ "'";
@@ -91,14 +91,15 @@ public class ProductDAO {
 		map.put("count", new Integer(total)); // 맵 키 count에 총 검색 결과 수 할당.
 
 		rs.absolute(searchVO.getPage() * searchVO.getPageUnit() - searchVO.getPageUnit() + 1);
-		// 보여줄 page번호(ex. 2) page당 보여줄 결과 수(ex.3) - page당 보여줄 결과 수+1(ex.4) =2?)
-		// 3*3-4 = 5?
-		// 1*3-4 = -1???????
+		// 보여줄 page번호(ex. 2) page당 보여줄 결과 수(ex.3) - page당 보여줄 결과 수+1(ex.4) =2)
+		// 3*3-3+1 = 7
+		// 1*3-4 = -1
 		System.out.println("searchVO.getPage():" + searchVO.getPage());
 		System.out.println("searchVO.getPageUnit():" + searchVO.getPageUnit());
 
 		ArrayList<ProductVO> list = new ArrayList<ProductVO>();
 		if (total > 0) { // 검색 결과가 있으면!
+			
 			for (int i = 0; i < searchVO.getPageUnit(); i++) {
 				ProductVO vo = new ProductVO();
 

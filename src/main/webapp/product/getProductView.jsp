@@ -255,7 +255,7 @@ function resetData(){
 						<%session.setAttribute("prodNo", request.getParameter("prodNo")); %>
 						<a href="javascript:fncAddProduct();">수정</a>
 					<%} else if(menu.equals("search")) {%>
-						<a href="/addPurchaseView.do?prod_no=<%=productVO.getProdNo()%>">구매</a>
+						<a href="/addPurchaseView.do?prodNo=<%=productVO.getProdNo()%>">구매</a>
 					<%} %>
 					</td>
 					

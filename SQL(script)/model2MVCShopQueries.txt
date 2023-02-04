@@ -62,7 +62,17 @@ Model2SHOP QUERY
 	WHERE p.prod_no = t.prod_no
 
 	SELECT p.prod_no prodNo FROM product p, transaction t WHERE p.prod_no = t.prod_no
+	
+	SELECT prod_no prodNo, tran_no tranNo FROM transaction;
+	SELECT prod_no prodNo, tran_no tranNo FROM transaction
 
+	SELECT t.prod_no prodNo, t.tran_no tranNo, u.user_id FROM users u, transaction t 
+	WHERE u.user_id = t.buyer_id
+	AND u.user_id = 'user17';
+
+	SELECT t.prod_no prodNo, t.tran_no tranNo, u.user_id FROM users u, transaction t 
+	WHERE u.user_id = t.buyer_id
+	AND u.user_id = ?
 
 06. updateTranCode()
 

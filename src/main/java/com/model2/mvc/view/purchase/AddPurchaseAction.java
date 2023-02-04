@@ -36,7 +36,7 @@ public class AddPurchaseAction extends Action {
 		purchaseVO.setDivyRequest(request.getParameter("receiverRequest"));
 		purchaseVO.setDivyDate(request.getParameter("receiverDate"));
 		
-		purchaseVO.setTranCode("0");
+		purchaseVO.setTranCode("1");
 		
 		System.out.println("addPurchaseAction안에서 모든 값 잘 세팅 됐니?"+purchaseVO);
 		

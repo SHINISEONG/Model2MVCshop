@@ -1,7 +1,10 @@
+<%@page import="com.model2.mvc.service.product.ProductService"%>
 <%@ page contentType="text/html; charset=euc-kr" %>
 
 <%@ page import="java.util.*"  %>
+<%@ page import="com.model2.mvc.service.purchase.vo.*" %>
 <%@ page import="com.model2.mvc.service.product.vo.*" %>
+<%@ page import="com.model2.mvc.service.user.vo.*" %>
 <%@ page import="com.model2.mvc.common.*" %>
 <%@ page import="com.model2.mvc.service.purchase.impl.*" %>
 <%@ page import="com.model2.mvc.service.purchase.*" %>
@@ -35,10 +38,11 @@
 	
 	PurchaseService purchaseService = new PurchaseServiceImpl();
 	
-	HashMap<String, Object> getSaleMap = new HashMap<String, Object>();
+	HashMap<String, Object> saleMap = purchaseService.getSaleList(searchVO);
+	
+	UserVO userVO = (UserVO)session.getAttribute("user");
 	
 	
-	ArrayList<Integer> soldOutList = (ArrayList<Integer>)purchaseService.getSaleList(searchVO).get("soldOut");
 %>
 
 
@@ -144,16 +148,35 @@ function fncGetProductList(){
 		int no=list.size();
 		for(int i=0; i<list.size(); i++) {
 			ProductVO vo = (ProductVO)list.get(i);
+			String prodNo = Integer.toString(vo.getProdNo());
+			System.out.println("prod No st: " + prodNo);
+			String tranNo = "";
+			int tranCode = 0;
+			PurchaseVO purchaseVO = new PurchaseVO();
+			if(saleMap.containsKey(prodNo)) {
+				tranNo = (String)saleMap.get(prodNo);
+				purchaseVO = purchaseService.findPerchase(Integer.parseInt(tranNo.trim()));
+				System.out.println("tran code : " + purchaseVO.getTranCode());
+				tranCode = Integer.parseInt(purchaseVO.getTranCode().trim());
+			}
+				System.out.println("tran No : "+tranNo);
+			
 	%>
 	<tr class="ct_list_pop">
 		<td align="center"><%=no--%></td>
 		<td></td>
 				
 				<td align="left">
-				<%if(!(soldOutList.contains(vo.getProdNo()))) {%>
+				<%if(!(saleMap.containsKey(prodNo))) {%>
 				<a href="/getProduct.do?prodNo=<%=vo.getProdNo()%>&menu=<%=menu%>"><%=vo.getProdName()%></a></td>
 				<%} else {%>
-					<%=vo.getProdName()%>
+					<%if(userVO.getUserId().equals("admin")) {%>
+						<a href="/getProduct.do?prodNo=<%=vo.getProdNo()%>&menu=<%=menu%>"><%=vo.getProdName()%></a></td>
+					<%} else {%>
+					
+					<%=vo.getProdName()%></td>
+					
+					<%} %>
 				<%} %>
 		
 		<td></td>
@@ -162,19 +185,58 @@ function fncGetProductList(){
 		<td align="left"><%=vo.getRegDate()%></td>
 		<td></td>
 		<td align="left">
-			<%if(!(soldOutList.contains(vo.getProdNo()))) {%>
-				 	판매중
-				<%} else {%>
-					재고 없음
+		<%if(menu.equals("search")) {%>
+			<%if(!(userVO.getUserId().equals("admin"))) {%>
+				<%if(!(saleMap.containsKey(prodNo))) {%>
+					 	판매중
+					<%} else {%>
+						재고 없음
+					<%} %>
+			<%} else {%>
+				<%if(tranCode==0) {%>
+					판매중
 				<%} %>
-			
-		
+				
+				<%if(tranCode==1) {%>
+					구매완료
+				<%} %>
+				
+				<%if(tranCode==2) {%>
+					배송중
+				<%} %>
+				
+				<%if(tranCode==3) {%>
+					배송완료
+				<%} %>
+				
+			<%} %>
+		<%} else if(menu.equals("manage")) {%>
+				
+				<%if(tranCode==0) {%>
+					판매중
+				<%} %>
+				
+				<%if(tranCode==1) {%>
+					구매완료
+					&nbsp;
+					<a href="/updateTranCodeByProd.do?prodNo=<%=vo.getProdNo() %>&tranCode=2&searchCondition=<%=searchVO.getSearchCondition()%>&searchKeyword=<%=searchVO.getSearchKeyword()%>&page=<%=searchVO.getPage()%>">배송하기</a>
+				<%} %>
+				
+				<%if(tranCode==2) {%>
+					배송중
+				<%} %>
+				
+				<%if(tranCode==3) {%>
+					배송완료
+				<%} %>
+				
+		<%} %>
 		</td>	
 	</tr>
 	<tr>
 		<td colspan="11" bgcolor="D6D7D6" height="1"></td>
 	</tr>	
-	<% } %>
+<% } //end of for %>
 		
 	
 </table>

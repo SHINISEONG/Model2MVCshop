@@ -18,7 +18,7 @@ public class ListProductAction extends Action {
 
 		int page = 1;
 		if (request.getParameter("page") != null)
-			page = Integer.parseInt(request.getParameter("page"));
+		page = Integer.parseInt(request.getParameter("page"));
 
 		searchVO.setPage(page);
 		searchVO.setSearchCondition(request.getParameter("searchCondition"));

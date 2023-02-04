@@ -100,15 +100,31 @@
 		<td></td>
 		<td align="left">
 			현재	
+		
 			<%
-			
-			if (purchaseVO.getTranCode().trim().equals("0")){%>
-							구매완료
+			if (purchaseVO.getTranCode().trim().equals("1")){%>
+							구매완료 상태
 			<%} %>
-				상태 입니다.</td>
-		<td></td>
-		<td align="left">
+		
+			<%
+			if (purchaseVO.getTranCode().trim().equals("2")){%>
+							배송중
+			<%} %>
 			
+			<%
+			if (purchaseVO.getTranCode().trim().equals("3")){%>
+							배송완료 상태
+			<%} %>
+		
+			 입니다.
+		</td>
+		<td></td> 
+   		<td align="left">
+
+		<% if ((purchaseVO.getTranCode().trim().equals("2"))){ %>
+			<a href="/updateTranCode.do?tranNo=<%=purchaseVO.getTranNo() %>&tranCode=3&page=<%=searchVO.getPage()%>">물건도착</a>
+		<%} %>
+
 		</td>
 	</tr>
 	

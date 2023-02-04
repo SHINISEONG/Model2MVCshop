@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.RequestDispatcher;
+
 import com.model2.mvc.common.SearchVO;
 import com.model2.mvc.common.util.DBUtil;
 import com.model2.mvc.service.product.ProductService;
@@ -158,21 +160,17 @@ public class PurchaseDAO {
 	public HashMap<String, Object> getSaleList(SearchVO searchVO) throws Exception {
 		Connection con = DBUtil.getConnection();
 
-		String sql = "SELECT p.prod_no prodNo FROM product p, transaction t WHERE p.prod_no = t.prod_no";
-
+		String sql = "SELECT prod_no prodNo, tran_no tranNo FROM transaction";
+		
 		PreparedStatement stmt = con.prepareStatement(sql); //
-				
+		
 		ResultSet rs = stmt.executeQuery();
 
-		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-				
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		while(rs.next()) {
-			list.add(rs.getInt("prodNo"));
-		}
-		map.put("soldOut", list); // "list"에 검색결과 할당
 		
+		while(rs.next()) {
+			map.put(rs.getString("prodNo"), rs.getString("tranNo"));
+		}
 		return map;
 	}//end of getSaleList()
 	

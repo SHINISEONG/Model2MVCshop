@@ -158,6 +158,7 @@ public class PurchaseDAO {
 	
 	
 	public HashMap<String, Object> getSaleList(SearchVO searchVO) throws Exception {
+		/*
 		Connection con = DBUtil.getConnection();
 
 		String sql = "SELECT prod_no prodNo, tran_no tranNo FROM transaction";
@@ -171,7 +172,8 @@ public class PurchaseDAO {
 		while(rs.next()) {
 			map.put(rs.getString("prodNo"), rs.getString("tranNo"));
 		}
-		return map;
+		*/
+		return null;
 	}//end of getSaleList()
 	
 

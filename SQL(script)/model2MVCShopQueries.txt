@@ -26,10 +26,25 @@ Model2SHOP QUERY
 	SELECT * FROM product WHERE prod_name = '보르도'  ;
 	SELECT * FROM product WHERE prod_name = ?
 
+	SELECT p.*, t.tran_status_code tranNo FROM product p, transaction t WHERE p.prod_no = t.prod_no AND prod_name='보르도';
+
+	SELECT p.*, t.tran_status_code tranNo FROM product p, transaction t WHERE p.prod_no = t.prod_no AND p.prod_no = 10001;
+	SELECT p.*, t.tran_status_code tranNo FROM product p, transaction t WHERE p.prod_no = t.prod_no AND p.prod_no = ?
+
 03. updateProduct()
 
 	UPDATE product SET prod_name='후히히', prod_detail='디테이루', manufacture_day='20230101', price=100, image_file='img.jpg' WHERE prod_no=10002;
 	UPDATE product SET prod_name=?, prod_detail=?, manufacture_day=?, price=?, image_file=? WHERE prod_no=?
+
+04. getProductList()
+
+	select p.*, NVL(t.tran_status_code,0) tranCode from PRODUCT p, transaction t
+	WHERE p.prod_no = t.prod_no(+);
+
+	SELECT p.*, iv.TRAN_STATUS_CODE
+	FROM product p, ( SELECT NVL(t.tran_status_code,0) "TRAN_STATUS_CODE"
+			  FROM product p, transaction t
+			  WHERE p.prod_no = t.prod_no ) iv;
 	
 	
 ----03. Purchase ------------------------------------------------------------------------------------
@@ -69,10 +84,20 @@ Model2SHOP QUERY
 	SELECT t.prod_no prodNo, t.tran_no tranNo, u.user_id FROM users u, transaction t 
 	WHERE u.user_id = t.buyer_id
 	AND u.user_id = 'user17';
+	
+	SELECT prod_no prodNo, tran_no tranNo FROM transaction WHERE prod_no = 10001;
+	SELECT prod_no prodNo, tran_no tranNo FROM transaction WHERE prod_no = ?
+	
+	---user---
 
 	SELECT t.prod_no prodNo, t.tran_no tranNo, u.user_id FROM users u, transaction t 
 	WHERE u.user_id = t.buyer_id
 	AND u.user_id = ?
+
+	---admin---
+
+	SELECT t.prod_no prodNo, t.tran_no tranNo, u.user_id FROM users u, transaction t 
+	WHERE u.user_id = t.buyer_id
 
 06. updateTranCode()
 

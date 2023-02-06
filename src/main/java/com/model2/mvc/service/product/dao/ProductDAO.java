@@ -36,7 +36,9 @@ public class ProductDAO {
 
 	public ProductVO findProduct(int prodNo) throws Exception {
 		Connection con = DBUtil.getConnection();
-		PreparedStatement stmt = con.prepareStatement("SELECT * FROM product WHERE PROD_NO = ?");
+		PreparedStatement stmt = con.prepareStatement("	SELECT p.*, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no FROM product p, transaction t "
+				+ "WHERE p.prod_no = t.prod_no(+) AND p.prod_no = ?");
+		
 		stmt.setInt(1, prodNo);
 
 		ResultSet rs = stmt.executeQuery();	
@@ -53,7 +55,8 @@ public class ProductDAO {
 			productVO.setManuDate(rs.getString("MANUFACTURE_DAY"));
 			productVO.setPrice(rs.getInt("PRICE"));
 			productVO.setRegDate(rs.getDate("REG_DATE"));
-			
+			productVO.setProTranCode(rs.getString("tran_code"));
+			productVO.setProTranNo(rs.getInt("TRAN_NO"));
 		}
 		con.close();
 		return productVO;
@@ -63,21 +66,22 @@ public class ProductDAO {
 
 		Connection con = DBUtil.getConnection();
 
-		String sql = "select * from PRODUCT ";
+		String sql = "	SELECT p.*, NVL(t.tran_status_code,0) tran_code, NVL(t.tran_no,0) tran_no FROM product p, transaction t "
+				+ "		WHERE p.prod_no = t.prod_no(+)";
 		if (searchVO.getSearchCondition() != null) {
 				
 			if (searchVO.getSearchCondition().equals("0")) {
-				sql += " where PROD_NO='" + searchVO.getSearchKeyword() // searchCon이 0이면 아이디검색
+				sql += " AND p.PROD_NO='" + searchVO.getSearchKeyword() // searchCon이 0이면 아이디검색
 						+ "'";
 			} else if (searchVO.getSearchCondition().equals("1")) {
-				sql += " where PROD_NAME like '%" + searchVO.getSearchKeyword() // serchCon이 1이면 이름 검색
+				sql += " AND p.PROD_NAME like '%" + searchVO.getSearchKeyword() // serchCon이 1이면 이름 검색
 						+ "%'";
 			} else if (searchVO.getSearchCondition().equals("2")) {
-				sql += " where PRICE='" + searchVO.getSearchKeyword() // serchCon이 2이면 가격 검색
+				sql += " AND p.PRICE='" + searchVO.getSearchKeyword() // serchCon이 2이면 가격 검색
 				+ "'";
 			}
 		}
-		sql += " order by PROD_NO";
+		sql += " order by p.PROD_NO";
 
 		PreparedStatement stmt = con.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
 				ResultSet.CONCUR_UPDATABLE); // ?이부분은 뭐지?
@@ -110,7 +114,8 @@ public class ProductDAO {
 				vo.setManuDate(rs.getString("MANUFACTURE_DAY"));
 				vo.setPrice(rs.getInt("PRICE"));
 				vo.setRegDate(rs.getDate("REG_DATE"));
-
+				vo.setProTranCode(rs.getString("tran_code"));
+				vo.setProTranNo(rs.getInt("tran_no"));
 				list.add(vo);
 				if (!rs.next())
 					break;

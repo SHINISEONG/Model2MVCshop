@@ -13,8 +13,17 @@ public class ProductVO {
 	private int prodNo;
 	private Date regDate;
 	private String proTranCode;
+	private int proTranNo;
 	
 	public ProductVO(){
+	}
+	
+	public int getProTranNo() {
+		return proTranNo;
+	}
+
+	public void setProTranNo(int proTranNo) {
+		this.proTranNo = proTranNo;
 	}
 	
 	public String getProTranCode() {

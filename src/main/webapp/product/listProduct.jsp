@@ -38,8 +38,6 @@
 	
 	PurchaseService purchaseService = new PurchaseServiceImpl();
 	
-	HashMap<String, Object> saleMap = purchaseService.getSaleList(searchVO);
-	
 	UserVO userVO = (UserVO)session.getAttribute("user");
 	
 	
@@ -148,26 +146,15 @@ function fncGetProductList(){
 		int no=list.size();
 		for(int i=0; i<list.size(); i++) {
 			ProductVO vo = (ProductVO)list.get(i);
-			String prodNo = Integer.toString(vo.getProdNo());
-			System.out.println("prod No st: " + prodNo);
-			String tranNo = "";
-			int tranCode = 0;
-			PurchaseVO purchaseVO = new PurchaseVO();
-			if(saleMap.containsKey(prodNo)) {
-				tranNo = (String)saleMap.get(prodNo);
-				purchaseVO = purchaseService.findPerchase(Integer.parseInt(tranNo.trim()));
-				System.out.println("tran code : " + purchaseVO.getTranCode());
-				tranCode = Integer.parseInt(purchaseVO.getTranCode().trim());
-			}
-				System.out.println("tran No : "+tranNo);
-			
+			int prodNo = vo.getProdNo();
+			int tranCode = Integer.parseInt(vo.getProTranCode().trim());
 	%>
 	<tr class="ct_list_pop">
 		<td align="center"><%=no--%></td>
 		<td></td>
 				
 				<td align="left">
-				<%if(!(saleMap.containsKey(prodNo))) {%>
+				<%if(tranCode==0) {%>
 				<a href="/getProduct.do?prodNo=<%=vo.getProdNo()%>&menu=<%=menu%>"><%=vo.getProdName()%></a></td>
 				<%} else {%>
 					<%if(userVO.getUserId().equals("admin")) {%>
@@ -187,7 +174,7 @@ function fncGetProductList(){
 		<td align="left">
 		<%if(menu.equals("search")) {%>
 			<%if(!(userVO.getUserId().equals("admin"))) {%>
-				<%if(!(saleMap.containsKey(prodNo))) {%>
+				<%if(tranCode == 0) {%>
 					 	판매중
 					<%} else {%>
 						재고 없음
@@ -195,17 +182,11 @@ function fncGetProductList(){
 			<%} else {%>
 				<%if(tranCode==0) {%>
 					판매중
-				<%} %>
-				
-				<%if(tranCode==1) {%>
+				<%} else if(tranCode==1) {%>
 					구매완료
-				<%} %>
-				
-				<%if(tranCode==2) {%>
+				<%} else if(tranCode==2) {%>
 					배송중
-				<%} %>
-				
-				<%if(tranCode==3) {%>
+				<%} else if(tranCode==3) {%>
 					배송완료
 				<%} %>
 				
@@ -214,19 +195,13 @@ function fncGetProductList(){
 				
 				<%if(tranCode==0) {%>
 					판매중
-				<%} %>
-				
-				<%if(tranCode==1) {%>
+				<%} else if(tranCode==1) {%>
 					구매완료
 					&nbsp;
 					<a href="/updateTranCodeByProd.do?prodNo=<%=vo.getProdNo() %>&tranCode=2&searchCondition=<%=searchVO.getSearchCondition()%>&searchKeyword=<%=searchVO.getSearchKeyword()%>&page=<%=searchVO.getPage()%>">배송하기</a>
-				<%} %>
-				
-				<%if(tranCode==2) {%>
+				<%} else if(tranCode==2) {%>
 					배송중
-				<%} %>
-				
-				<%if(tranCode==3) {%>
+				<%} else if(tranCode==3) {%>
 					배송완료
 				<%} %>
 				

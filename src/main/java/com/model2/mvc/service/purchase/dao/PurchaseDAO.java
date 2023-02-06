@@ -158,22 +158,7 @@ public class PurchaseDAO {
 	
 	
 	public HashMap<String, Object> getSaleList(SearchVO searchVO) throws Exception {
-		/*
-		Connection con = DBUtil.getConnection();
-
-		String sql = "SELECT prod_no prodNo, tran_no tranNo FROM transaction";
-		
-		PreparedStatement stmt = con.prepareStatement(sql); //
-		
-		ResultSet rs = stmt.executeQuery();
-
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		while(rs.next()) {
-			map.put(rs.getString("prodNo"), rs.getString("tranNo"));
-		}
-		*/
-		return null;
+			return null;
 	}//end of getSaleList()
 	
 
